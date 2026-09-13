@@ -1,1 +1,1 @@
-# .github
+code for humans.
