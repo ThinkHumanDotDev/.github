@@ -1,0 +1,58 @@
+# Reusable lint job: `biome ci` against the repo's biome.json, which extends
+# @thinkhuman/biome-config. Call it from a repo with a few lines:
+#
+#   jobs:
+#     biome:
+#       uses: ThinkHumanDotDev/.github/.github/workflows/biome.yml@<sha>
+#
+# The package manager comes from the lockfile (pnpm-lock.yaml, bun.lock or bun.lockb,
+# package-lock.json). Install runs frozen and with scripts off: Biome only needs its own binary and
+# the shared config, and nothing a dependency's install script does should affect a lint result.
+name: Biome
+
+on:
+  workflow_call:
+    inputs:
+      working-directory:
+        description: Directory holding package.json and biome.json.
+        type: string
+        default: .
+      node-version:
+        description: Node.js version for the install.
+        type: string
+        default: '24'
+
+permissions:
+  contents: read
+
+jobs:
+  biome:
+    name: Biome
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
+    steps:
+      - uses: actions/checkout@v7
+      - name: Detect package manager
+        id: pm
+        run: |
+          if [ -f pnpm-lock.yaml ]; then echo "name=pnpm" >> "$GITHUB_OUTPUT"
+          elif [ -f bun.lock ] || [ -f bun.lockb ]; then echo "name=bun" >> "$GITHUB_OUTPUT"
+          elif [ -f package-lock.json ]; then echo "name=npm" >> "$GITHUB_OUTPUT"
+          else echo "::error::No pnpm-lock.yaml, bun.lock or package-lock.json in ${{ inputs.working-directory }}" && exit 1
+          fi
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ inputs.node-version }}
+      - if: steps.pm.outputs.name == 'bun'
+        uses: oven-sh/setup-bun@v2
+      - name: Install
+        run: |
+          case "${{ steps.pm.outputs.name }}" in
+            pnpm) corepack enable && pnpm install --frozen-lockfile --ignore-scripts ;;
+            bun) bun install --frozen-lockfile --ignore-scripts ;;
+            npm) npm ci --ignore-scripts ;;
+          esac
+      - name: biome ci
+        run: ./node_modules/.bin/biome ci --reporter=github --reporter=default
