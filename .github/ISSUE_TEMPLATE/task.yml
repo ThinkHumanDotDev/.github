@@ -1,0 +1,24 @@
+name: Task
+description: Planned work with acceptance criteria (chores, refactors, infrastructure)
+body:
+  - type: textarea
+    id: why
+    attributes:
+      label: Why
+      description: The reason for the work and what it unblocks.
+    validations:
+      required: true
+  - type: textarea
+    id: criteria
+    attributes:
+      label: Acceptance criteria
+      description: One checkable statement per line. The pull request is checked against every one.
+      placeholder: |
+        - [ ] ...
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: Links, constraints, anything the implementer should know.
