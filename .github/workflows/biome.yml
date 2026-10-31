@@ -5,8 +5,8 @@
 #     biome:
 #       uses: ThinkHumanDotDev/.github/.github/workflows/biome.yml@<sha>
 #
-# The package manager comes from the lockfile (pnpm-lock.yaml, bun.lock or bun.lockb,
-# package-lock.json). Install runs frozen and with scripts off: Biome only needs its own binary and
+# The package manager comes from the lockfile (bun.lock or bun.lockb, package-lock.json, yarn.lock,
+# pnpm-lock.yaml). Yarn 2+ (a .yarnrc.yml) needs `nodeLinker: node-modules`. Install runs frozen and with scripts off: Biome only needs its own binary and
 # the shared config, and nothing a dependency's install script does should affect a lint result.
 name: Biome
 
@@ -40,7 +40,8 @@ jobs:
           if [ -f pnpm-lock.yaml ]; then echo "name=pnpm" >> "$GITHUB_OUTPUT"
           elif [ -f bun.lock ] || [ -f bun.lockb ]; then echo "name=bun" >> "$GITHUB_OUTPUT"
           elif [ -f package-lock.json ]; then echo "name=npm" >> "$GITHUB_OUTPUT"
-          else echo "::error::No pnpm-lock.yaml, bun.lock or package-lock.json in ${{ inputs.working-directory }}" && exit 1
+          elif [ -f yarn.lock ]; then echo "name=yarn" >> "$GITHUB_OUTPUT"
+          else echo "::error::No bun.lock, package-lock.json, yarn.lock or pnpm-lock.yaml in ${{ inputs.working-directory }}" && exit 1
           fi
       - uses: actions/setup-node@v7
         with:
@@ -53,6 +54,12 @@ jobs:
             pnpm) corepack enable && pnpm install --frozen-lockfile --ignore-scripts ;;
             bun) bun install --frozen-lockfile --ignore-scripts ;;
             npm) npm ci --ignore-scripts ;;
+            yarn)
+              corepack enable
+              # Yarn 2+ has a .yarnrc.yml and its own flags; Yarn 1 does not.
+              if [ -f .yarnrc.yml ]; then yarn install --immutable --mode=skip-build
+              else yarn install --frozen-lockfile --ignore-scripts
+              fi ;;
           esac
       - name: biome ci
         run: ./node_modules/.bin/biome ci --reporter=github --reporter=default
