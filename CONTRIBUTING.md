@@ -35,6 +35,11 @@ Formatting and linting are [Biome](https://biomejs.dev) on the shared
 [Renovate](https://github.com/ThinkHumanDotDev/renovate-config) opens update pull requests on Monday
 mornings. A new dependency needs a reason in the pull request description.
 
+## Licensing
+
+Contributions are made under the repository's `LICENSE`. Which license a repository gets, and how to
+apply it, is in [LICENSING.md](LICENSING.md).
+
 ## Security
 
 Never report a vulnerability in public. See [SECURITY.md](SECURITY.md).
