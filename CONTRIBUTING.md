@@ -37,8 +37,9 @@ mornings. A new dependency needs a reason in the pull request description.
 
 ## Licensing
 
-Contributions are made under the repository's `LICENSE`. Which license a repository gets, and how to
-apply it, is in [LICENSING.md](LICENSING.md).
+In a repository with a `LICENSE`, contributions are made under that license. A private repository
+has none: contributions to it belong to ThinkHuman Ltd. under your agreement with the company. Which
+license a repository gets, and how to apply it, is in [LICENSING.md](LICENSING.md).
 
 ## Security
 
