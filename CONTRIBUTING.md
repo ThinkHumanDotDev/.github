@@ -29,7 +29,7 @@ Write Markdown with one line per paragraph, list item or table row. Do not hard-
 
 ## Licensing
 
-In a repository with a `LICENSE`, contributions are made under that license. A private repository has none: contributions to it belong to ThinkHuman Ltd. under your agreement with the company.
+In a repository with a `LICENSE` file, contributions are made under that license. A private repository has none: contributions to it belong to ThinkHuman Ltd. under your agreement with the company.
 
 ## Security
 
