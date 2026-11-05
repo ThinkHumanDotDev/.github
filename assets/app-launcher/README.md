@@ -1,8 +1,6 @@
 # App Launcher tiles
 
-Logos for the Cloudflare Access App Launcher: 512×512 rounded squares (corner radius 51.2), on `#0f172a` unless
-the app has its own background colour, so the tiles line up. Link them by raw URL, e.g.
-`https://raw.githubusercontent.com/ThinkHumanDotDev/.github/main/assets/app-launcher/portainer.svg`.
+Logos for the Cloudflare Access App Launcher: 512×512 rounded squares (corner radius 51.2), on `#0f172a` unless the app has its own background colour, so the tiles line up. Link them by raw URL, e.g. `https://raw.githubusercontent.com/ThinkHumanDotDev/.github/main/assets/app-launcher/portainer.svg`.
 
 | File | Source |
 | --- | --- |
